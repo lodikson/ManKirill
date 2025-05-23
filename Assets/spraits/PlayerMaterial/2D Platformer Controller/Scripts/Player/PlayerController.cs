@@ -6,7 +6,8 @@ namespace SupanthaPaul
 {
 	public class PlayerController : MonoBehaviour
 	{
-		[SerializeField] private float speed;
+		[SerializeField] public float speed;
+		[SerializeField] private float Normalspeed;
 		[Header("Jumping")]
 		[SerializeField] private float jumpForce;
 		[SerializeField] private float fallMultiplier;
@@ -73,6 +74,7 @@ namespace SupanthaPaul
 		
 		void Start()
 		{
+			OnButtonUp();
 			// create pools for particles
 			PoolManager.instance.CreatePool(dashEffect, 2);
 			PoolManager.instance.CreatePool(jumpEffect, 2);
@@ -92,6 +94,10 @@ namespace SupanthaPaul
 
 		private void FixedUpdate()
 		{
+			transform.Translate(speed * Time.deltaTime, 0, 0);
+			moveInput = InputSystem.HorizontalRaw();
+			m_rb.velocity = new Vector2(speed, m_rb.velocity.y);
+
 			text.text = "" + knight.kcount;
 			// check if grounded
 			isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
@@ -105,7 +111,12 @@ namespace SupanthaPaul
 			// calculate player and wall sides as integers
 			CalculateSides();
 
-			if((m_wallGrabbing || isGrounded) && m_wallJumping)
+			if (!m_facingRight && speed > 0f /* moveInput > 0f*/)
+				Flip();
+			else if (m_facingRight && speed < 0f /* moveInput < 0f*/)
+				Flip();
+
+			if ((m_wallGrabbing || isGrounded) && m_wallJumping)
 			{
 				m_wallJumping = false;
 			}
@@ -131,10 +142,11 @@ namespace SupanthaPaul
 					m_rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
 				}
 
+
 				// Flipping
-				if (!m_facingRight && moveInput > 0f)
+				if (!m_facingRight && speed > 0f)
 					Flip();
-				else if (m_facingRight && moveInput < 0f)
+				else if (m_facingRight && speed < 0f)
 					Flip();
 
 				// Dashing logic
@@ -188,12 +200,13 @@ namespace SupanthaPaul
 			}
 		}
 		
-			private void Update()
+		private void Update()
 		{
 			
-
+			
 			// horizontal input
 			moveInput = InputSystem.HorizontalRaw();
+
 
 			if (isGrounded)
 			{
@@ -233,14 +246,9 @@ namespace SupanthaPaul
 
 			if (Input.GetKeyDown(KeyCode.C))
 			{
-				
-				if(knight.kcount > 0)
-                {
-					ShootDagger();
-					knight.kcount -= 1;
-				}
-				
+				KnightAttack();
 			}
+
 			// Jumping
 			if(InputSystem.Jump() && m_extraJumps > 0 && !isGrounded && !m_wallGrabbing)	// extra jumping
 			{
@@ -278,7 +286,7 @@ namespace SupanthaPaul
 			Vector3 objectPosition = transform.position;
 
 			// Проверяем, находится ли мышь слева или справа от объекта
-			/*
+			/*	
 			if (mousePosition.x < objectPosition.x)
 			{
 				// Мышь слева, поворачиваемся влево
@@ -290,7 +298,8 @@ namespace SupanthaPaul
 				transform.eulerAngles = new Vector3(0, -180, 0);
 			}
 			*/
-		
+
+
 
 
 
@@ -328,10 +337,16 @@ namespace SupanthaPaul
 			Gizmos.DrawWireSphere((Vector2)transform.position + grabLeftOffset, grabCheckRadius);
 		}
 
-		void SickState(int cold)
+		public void KnightAttack()
         {
+			if (knight.kcount > 0)
+			{
+				ShootDagger();
+				knight.kcount -= 1;
+			}
+		}
 
-        }
+		
 		void ShootDagger()
 		{
 			// Получаем позицию мыши в мировых координатах
@@ -352,6 +367,71 @@ namespace SupanthaPaul
 			// Инициализируем кинжал с направлением
 			dagger.GetComponent<knight>().Initialize(direction);
 		}
+
+		public void ShotDow()
+        {
+			if (!isDashing && !m_hasDashedInAir && m_dashCooldown <= 0f)
+			{
+				
+				isDashing = true;
+				// dash effect
+				PoolManager.instance.ReuseObject(dashEffect, transform.position, Quaternion.identity);
+				// if player in air while dashing
+				if (!isGrounded)
+				{
+					m_hasDashedInAir = true;
+				}
+				// dash logic is in FixedUpdate
+				
+			}
+		}
+
+		public void OnJumpButtonDown()
+        {
+			if (m_extraJumps > 0 && !isGrounded && !m_wallGrabbing)   // extra jumping
+			{
+				m_rb.velocity = new Vector2(m_rb.velocity.x, m_extraJumpForce); ;
+				m_extraJumps--;
+				// jumpEffect
+				PoolManager.instance.ReuseObject(jumpEffect, groundCheck.position, Quaternion.identity);
+			}
+			else if ((isGrounded || m_groundedRemember > 0f)) // normal single jumping
+			{
+				m_rb.velocity = new Vector2(m_rb.velocity.x, jumpForce);
+				// jumpEffect
+				PoolManager.instance.ReuseObject(jumpEffect, groundCheck.position, Quaternion.identity);
+			}
+			else if (m_wallGrabbing && moveInput != m_onWallSide)     // wall jumping off the wall
+			{
+				m_wallGrabbing = false;
+				m_wallJumping = true;
+				Debug.Log("Wall jumped");
+				if (m_playerSide == m_onWallSide)
+					Flip();
+				m_rb.AddForce(new Vector2(-m_onWallSide * wallJumpForce.x, wallJumpForce.y), ForceMode2D.Impulse);
+			}
+			else if (m_wallGrabbing && moveInput != 0 && (moveInput == m_onWallSide))      // wall climbing jump
+			{
+				m_wallGrabbing = false;
+				m_wallJumping = true;
+				Debug.Log("Wall climbed");
+				if (m_playerSide == m_onWallSide)
+					Flip();
+				m_rb.AddForce(new Vector2(-m_onWallSide * wallClimbForce.x, wallClimbForce.y), ForceMode2D.Impulse);
+			}
+		}
+		public void OnLeftButtonDown()
+        {
+			speed = -6f;
+		}
+		public void OnRightButtonDown()
+		{
+			speed = 6f;
+		}
+		public void OnButtonUp()
+        {
+			speed = 0f;
+        }
 	}
 
 	

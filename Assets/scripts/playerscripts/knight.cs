@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class knight : MonoBehaviour
 {
-    public static int kcount = 1000;
+    public static int kcount;
     public GameObject player;
 
     public Rigidbody2D rb;

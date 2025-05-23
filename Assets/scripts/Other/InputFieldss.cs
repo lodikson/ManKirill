@@ -45,6 +45,10 @@ public class InputFieldss : MonoBehaviour
         {
             SceneManager.LoadScene(9);
         }
+        if (input_text == "End")
+        {
+            SceneManager.LoadScene(11);
+        }
     }
 
     public void OnCExit()

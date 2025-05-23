@@ -41,7 +41,7 @@ public class PlayerCombat : Sounds
     }
     
     
-    void Attack()
+    public void Attack()
     {
         
         //Play attack animation
