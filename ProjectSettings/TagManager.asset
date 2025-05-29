@@ -10,6 +10,8 @@ TagManager:
   - Enemy
   - Finiki
   - Wall
+  - Intr
+  - UIman
   layers:
   - Default
   - TransparentFX

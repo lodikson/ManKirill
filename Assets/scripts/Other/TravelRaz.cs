@@ -23,18 +23,14 @@ public class TravelRaz : MonoBehaviour
         if (collision.tag == "Player")
         {
 
-            // Находим все объекты с указанным тегом
-            GameObject[] objects = GameObject.FindGameObjectsWithTag("Enemy");
-
-            // Сохраняем количество объектов в переменную
-            canktion.objectCount = objects.Length;
-
-            Debug.Log("Количество объектов: " + canktion.objectCount);
-            if (canktion.objectCount == 0)
+            
+            if (canktion.objectCount == 0 && SomethingIntrasting.objectCountIntr == 0)
             {
                 PlayerPrefs.SetInt("scen", SceneNumber);
                 PlayerPrefs.Save();
+                PlayerPositionSAver.SaveCurrentPosition(gameObject);
                 SceneManager.LoadScene(SceneNumber);
+                
             }
             else
             {
@@ -55,7 +51,7 @@ public class TravelRaz : MonoBehaviour
 
     public void UpdateUI()
     {
-        text.text = "Нужно устранить " + canktion.objectCount;
+        text.text = "Я упустил " + (SomethingIntrasting.objectCountIntr + canktion.objectCount) + " деталь";
     }
 
     private void BlinkMessage()

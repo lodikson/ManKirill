@@ -645,6 +645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NumScene: 13
+  goida: 0
 --- !u!61 &145659429
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1645,7 +1646,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1280, y: 800}
+  m_ReferenceResolution: {x: 1980, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -2100,6 +2101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NumScene: 8
+  goida: 0
 --- !u!61 &616932485
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5948,7 +5950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1601014548
 Transform:
   m_ObjectHideFlags: 0

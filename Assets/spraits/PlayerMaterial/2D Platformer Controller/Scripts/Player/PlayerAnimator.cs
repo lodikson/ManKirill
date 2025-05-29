@@ -40,25 +40,16 @@ namespace SupanthaPaul
 				m_anim.SetBool(IsJumping, false);
 			}
 
+			
 			if(!m_controller.isGrounded && m_controller.actuallyWallGrabbing)
 			{
 				m_anim.SetBool(WallGrabbing, true);
-			} 
-			else
+			} else
 			{
 				m_anim.SetBool(WallGrabbing, false);
 			}
 			
-			if (m_controller.isGrounded && m_controller.speed != 0)
-			{
-				m_anim.SetFloat(Move, 1);
-			}
-			
 
-			//if (Input.GetMouseButtonDown(0))
-			//{
-			//	m_anim.SetTrigger(Melee);
-			//}
 			// dash animation
 			m_anim.SetBool(IsDashing, m_controller.isDashing);
 		}

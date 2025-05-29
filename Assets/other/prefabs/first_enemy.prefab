@@ -11,13 +11,12 @@ GameObject:
   - component: {fileID: 4539941136095115852}
   - component: {fileID: 4539941136095115855}
   - component: {fileID: 4539941136095115854}
-  - component: {fileID: 4539941136095115824}
-  - component: {fileID: 6458250923035601442}
   - component: {fileID: 4539941136095115851}
   - component: {fileID: 686207958882855116}
   - component: {fileID: 7479748425217716931}
   - component: {fileID: 6796859568057378711}
   - component: {fileID: 7306156345046290628}
+  - component: {fileID: 6773841324739878122}
   m_Layer: 9
   m_Name: first_enemy
   m_TagString: Enemy
@@ -118,48 +117,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.69, y: 1.62}
   m_EdgeRadius: 0
---- !u!114 &4539941136095115824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539941136095115827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52c07002190ae03429f082e152f41a85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - {fileID: 8300000, guid: 49b9c448b86e24e46b57e2457a43b30b, type: 3}
-  animator: {fileID: 4539941136095115851}
-  speed: 3
-  maxHealth: 100
-  player: {fileID: 0}
-  target: {fileID: 0}
-  detectionRadius: 2
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  targetTag: Player
-  attackPoint: {fileID: 0}
-  DamagePlayer: 10
-  attackRate: 0.5
-  DocTime: 3
-  detectionRange: 30
---- !u!114 &6458250923035601442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539941136095115827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bdb0c82882860f47b308d9ee61a4f7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  block: 1
 --- !u!95 &4539941136095115851
 Animator:
   serializedVersion: 5
@@ -245,3 +202,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.81
+--- !u!114 &6773841324739878122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4539941136095115827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffa9027772e14c442b033862c10d1dcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRange: 10
+  minStopDistance: 1
+  moveSpeed: 3
+  patrolDelay: 2
+  rb: {fileID: 686207958882855116}

@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class SomethingIntrasting : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string targetTag = "Intr"; // Тег объектов, которые нужно посчитать
+    public static int objectCountIntr;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Находим все объекты с указанным тегом
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Intr");
+
+        // Сохраняем количество объектов в переменную
+        objectCountIntr = objects.Length;
+
+    }
+
+    public void DeleteTag()
+    {
+        this.tag = "Wall";
     }
 }
